@@ -4,7 +4,6 @@ export default function AddVideoModal({ onClose, onUpload }) {
   const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
 
-  // Extract video ID
   const extractId = (url) => {
     const reg = /(?:v=|youtu\.be\/|embed\/)([^&?/]+)/;
     const match = url.match(reg);

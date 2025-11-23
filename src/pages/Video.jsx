@@ -1,19 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AddVideoModal from "../components/AddVideoModal";
 import VideoCard from "../components/VideoCard";
 
 export default function Video() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [videos, setVideos] = useState([
-    {
-      link: "https://www.youtube.com/embed/ysz5S6PUM-U",
-      title: "Bride Intro",
-      views: 0,
-      videoId: "ysz5S6PUM-U",
-    },
-  ]);
 
-  // Add Video
+  const [videos, setVideos] = useState([]); // start empty
+
   const addVideo = (newVideo) => {
     setVideos([...videos, newVideo]);
   };
@@ -24,6 +17,8 @@ export default function Video() {
 
   return (
     <div className="p-6">
+
+      {/* --- HEADER LINE (Line 1) --- */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Video Management</h1>
 
@@ -35,7 +30,12 @@ export default function Video() {
         </button>
       </div>
 
-      {/* VIDEO CARDS */}
+      {/* --- NO VIDEOS YET MESSAGE --- */}
+      {videos.length === 0 && (
+        <p className="mt-4 text-gray-600 text-lg">No videos yet. Add one!</p>
+      )}
+
+      {/* --- VIDEO GRID --- */}
       <div className="grid grid-cols-3 gap-6 mt-6">
         {videos.map((vid, index) => (
           <VideoCard
@@ -46,6 +46,7 @@ export default function Video() {
         ))}
       </div>
 
+      {/* --- MODAL --- */}
       {isModalOpen && (
         <AddVideoModal
           onClose={() => setIsModalOpen(false)}

@@ -11,24 +11,28 @@ export default function Sidebar({ onNavigate }) {
       >
         Dashboard
       </button>
+
       <button
         onClick={() => onNavigate("gallery")}
         className="block w-full text-left px-3 py-2 rounded hover:bg-gray-200"
       >
         Gallery Management
       </button>
-       <button
+
+      <button
         onClick={() => onNavigate("video")}
         className="block w-full text-left px-3 py-2 rounded hover:bg-gray-200"
       >
         Video Management
       </button>
+
       <button
         onClick={() => onNavigate("booking")}
         className="block w-full text-left px-3 py-2 rounded hover:bg-gray-200"
       >
         Booking Management
       </button>
+
       <button
         onClick={() => onNavigate("contact")}
         className="block w-full text-left px-3 py-2 rounded hover:bg-gray-200"
