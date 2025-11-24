@@ -1,0 +1,167 @@
+/* BookingManagement.css */
+
+/* Main container */
+.booking-container {
+  padding: 20px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header section */
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Calendar box */
+.calendar-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* Actions section */
+.booking-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Notification button */
+.notification-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.notification-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Badge on notification */
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #f97316;
+  color: #ffffff;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+/* Add new advertise button */
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f97316;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  background-color: #ea580c;
+}
+
+/* Tabs container */
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* Individual tab button */
+.tab-btn {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Active tab */
+.tab-btn.active {
+  background-color: #f97316;
+  color: #ffffff;
+  border-color: #f97316;
+}
+
+/* Empty view message */
+.empty-view {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Card list container */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Notification panel */
+.notification-panel {
+  position: absolute;
+  right: 20px;
+  top: 60px;
+  width: 280px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 16px;
+  z-index: 50;
+  font-size: 14px;
+}
+
+.notification-panel h3 {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.notification-panel ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.notification-panel ul li {
+  padding: 6px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notification-panel ul li:last-child {
+  border-bottom: none;
+}

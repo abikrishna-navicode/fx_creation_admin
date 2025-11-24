@@ -1,0 +1,10 @@
+/* Video.css */
+.video-page {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.video-page h2 {
+  font-weight: 600;
+  margin-bottom: 16px;
+}

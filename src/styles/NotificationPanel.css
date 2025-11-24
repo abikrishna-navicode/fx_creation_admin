@@ -1,0 +1,16 @@
+/* NotificationPanel.css */
+.notification-panel {
+  position: absolute;
+  right: 24px;
+  top: 64px;
+  width: 320px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 16px;
+  z-index: 50;
+}
+.notification-panel strong { font-weight: 600; }
+.notification-panel button { background: none; border: none; cursor: pointer; color: #6b7280; font-size: 12px; }
+.notification-panel .divide-y > div { border-bottom: 1px solid #e5e7eb; padding: 6px 0; }
+.notification-panel .divide-y > div:last-child { border-bottom: none; }

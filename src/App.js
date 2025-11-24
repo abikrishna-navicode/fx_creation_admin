@@ -1,10 +1,9 @@
-// App.js
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import GalleryManager from "./components/GalleryManager";
 import AlbumPage from "./components/AlbumPage";
 import Video from "./pages/Video";
-import BookingManagement from "./pages/BookingManagement"; // ✅ NEW IMPORT
+import BookingManagement from "./pages/BookingManagement";
 
 export default function App() {
   const [activePage, setActivePage] = useState("gallery");
@@ -23,7 +22,6 @@ export default function App() {
 
   function deleteAlbum(albumToDelete) {
     setAlbums((prev) => prev.filter((a) => a !== albumToDelete));
-
     if (selectedAlbum === albumToDelete) {
       setSelectedAlbum(null);
       setActivePage("gallery");
@@ -40,14 +38,16 @@ export default function App() {
     );
   }
 
-  // ───── UI Layout ────────────────────────────────
+  // ───── Layout ────────────────────────────────
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar onNavigate={setActivePage} />
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-md">
+        <Sidebar onNavigate={setActivePage} />
+      </div>
 
-      <div className="flex-1 p-6 overflow-auto">
-
-        {/* Gallery Management */}
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-auto">
         {activePage === "gallery" && (
           <GalleryManager
             albums={albums}
@@ -57,7 +57,6 @@ export default function App() {
           />
         )}
 
-        {/* Album View */}
         {activePage === "album" && selectedAlbum && (
           <AlbumPage
             album={selectedAlbum}
@@ -65,22 +64,18 @@ export default function App() {
           />
         )}
 
-        {/* Video Page */}
         {activePage === "video" && <Video />}
 
-        {/* Dashboard */}
         {activePage === "dashboard" && (
           <h1 className="text-2xl font-bold">Dashboard Coming Soon...</h1>
         )}
 
-        {/* Booking Management — FULL MODULE */}
         {activePage === "booking" && <BookingManagement />}
 
-        {/* Contact Messages */}
         {activePage === "contact" && (
           <h1 className="text-2xl font-bold">Contact Messages Coming Soon...</h1>
         )}
-      </div>
+      </main>
     </div>
   );
 }
