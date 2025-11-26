@@ -1,18 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* small overrides for react-calendar so it looks like your screenshot */
-.react-calendar {
-  border: 0;
-  font-family: inherit;
-}
-.react-calendar__tile--now {
-  background: transparent;
-  border-radius: 0.25rem;
-}
-.react-calendar__tile--active {
-  background: #f97316; /* orange-500 */
-  color: white;
-  border-radius: 0.25rem;
-}
