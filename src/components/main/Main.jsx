@@ -1,35 +1,22 @@
-import { IoCalendarOutline } from "react-icons/io5";
-import { IoNotificationsOutline } from "react-icons/io5";
+import React from "react";
+import GalleryPage from "../gallery/GalleryPage";
 
-const Main = () => {
+const Main = ({ activePage }) => {
   return (
-    <div className="flex flex-col bg-gray-100 min-h-screen">
-
-      {/* HEADER BAR */}
-      <header className="w-full bg-white shadow-sm px-8 py-4 flex items-center justify-between">
-        
-        {/* Left side: Good Morning */}
-        <h2 className="text-xl font-semibold text-gray-700">
-          Good Morning
-        </h2>
-
-        {/* Right side icons + Add Album */}
-        <div className="flex items-center gap-6">
-          <IoCalendarOutline className="text-2xl text-gray-600 cursor-pointer" />
-          <IoNotificationsOutline className="text-2xl text-gray-600 cursor-pointer" />
-
-          <button className="bg-orange-500 text-white px-5 py-2 rounded-md hover:bg-orange-600">
-            + Add Album
-          </button>
+    <div className="min-h-screen">
+      {/* Header removed as requested — plain white screen */}
+      {activePage === "dashboard" && (
+        <div className="p-6 bg-white rounded shadow-sm">
+          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <p className="mt-3 text-sm text-gray-600">Nothing to show yet.</p>
         </div>
+      )}
 
-      </header>
-
-      {/* BODY */}
-      <main className="flex-1 bg-white p-6 m-6 rounded-md shadow">
-        {/* Body is empty (ready for album cards later) */}
-      </main>
-
+      {activePage === "gallery" && (
+        <div className="w-full">
+          <GalleryPage />
+        </div>
+      )}
     </div>
   );
 };
