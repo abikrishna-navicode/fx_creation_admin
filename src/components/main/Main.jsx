@@ -1,5 +1,6 @@
 import React from "react";
 import GalleryPage from "../gallery/GalleryPage";
+import VideoManagement from "../video/VideoManagement";
 
 const Main = ({ activePage }) => {
   return (
@@ -17,6 +18,9 @@ const Main = ({ activePage }) => {
           <GalleryPage />
         </div>
       )}
+      {activePage === "video" && <VideoManagement />}
+      {activePage === "booking" && <h1>Booking Management</h1>}
+      {activePage === "contact" && <h1>Contact Messages</h1>}
     </div>
   );
 };
