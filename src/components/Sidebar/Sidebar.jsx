@@ -1,59 +1,46 @@
-import React from "react";
-import { IoIosCard } from "react-icons/io";
+import React, { useState } from "react";
+import { MdSpaceDashboard, MdVideoLibrary, MdMessage } from "react-icons/md";
+import { FaPhotoVideo, FaBookOpen } from "react-icons/fa";
 
 const Sidebar = ({ onNavigate }) => {
+  const [active, setActive] = useState("dashboard");
+
+  // ⭐ Handles click + highlight + open screen
+  const handleClick = (page) => {
+    setActive(page);
+    onNavigate(page);
+  };
+
+  const menuItem = (page, Icon, label) => (
+    <button
+      onClick={() => handleClick(page)}
+      className={`text-left px-3 py-2 rounded flex items-center gap-2 transition-all
+      ${active === page ? "bg-orange-500 text-white shadow-md" : "hover:bg-gray-100 text-gray-700"}
+      `}
+    >
+      <Icon size={18} className={`${active === page ? "text-white" : "text-gray-600"}`} />
+      {label}
+    </button>
+  );
+
   return (
-    <div className="h-screen p-6 flex flex-col gap-8">
-      {/* Logo section */}
-      <div className="flex items-center gap-3">
-        <img src="/logo.png" alt="logo" className="w-10 h-10 object-contain" />
-        <div className="text-lg font-bold">FX CREATIONS STUDIO</div>
+    <div className="h-screen p-6 flex flex-col gap-8 border-r border-gray-300 bg-white">
+      {/* Logo */}
+      <div className="flex items-center gap-3 mb-4">
+        <img src="/src/assets/images/logo.png" alt="logo" className="w-10 h-10 object-contain" />
+        <div className="text-lg font-bold">FX CREATION STUDIO</div>
       </div>
 
-      {/* Sidebar menu */}
       <nav className="flex flex-col gap-3 text-sm">
-        <button
-          onClick={() => onNavigate("dashboard")}
-          className="text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2"
-        >
-          <IoIosCard />
-          Dashboard
-        </button>
-
-        <button
-          onClick={() => onNavigate("gallery")}
-          className="text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2"
-        >
-          <IoIosCard />
-          Gallery Management
-        </button>
-
-        <button
-          onClick={() => onNavigate("video")}
-          className="text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2"
-        >
-          <IoIosCard />
-          Video Management
-        </button>
-
-        <button
-          onClick={() => onNavigate("booking")}
-          className="text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2"
-        >
-          <IoIosCard />
-          Booking Management
-        </button>
-
-        <button
-          onClick={() => onNavigate("contact")}
-          className="text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2"
-        >
-          <IoIosCard />
-          Contact Messages
-        </button>
+        {menuItem("dashboard", MdSpaceDashboard, "Dashboard")}
+        {menuItem("sections", FaPhotoVideo, "Image Sections")}
+        {menuItem("albums", FaBookOpen, "Gallery Albums")}
+        {menuItem("video", MdVideoLibrary, "Video Management")}
+        {menuItem("booking", FaBookOpen, "Booking Management")}
+        {menuItem("contact", MdMessage, "Contact Messages")}
       </nav>
 
-      <div className="mt-auto text-xs text-gray-500">© FX Creations</div>
+      <div className="mt-auto text-xs text-gray-500">© FX Creation</div>
     </div>
   );
 };

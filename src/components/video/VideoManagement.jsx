@@ -12,15 +12,13 @@ export default function VideoManagement() {
   const [showModal, setShowModal] = useState(false);
   const [editVideo, setEditVideo] = useState(null);
 
-  // Load videos and categories on mount (and whenever component remounts)
+  // load on first mount
   useEffect(() => {
-    const vs = getFromStorage("videos", []);
-    const cs = getFromStorage("categories", []);
-    setVideos(vs);
-    setCategories(cs);
+    setVideos(getFromStorage("videos", []));
+    setCategories(getFromStorage("categories", []));
   }, []);
 
-  // helper to persist videos and update state
+  // save & update UI instantly
   const persistVideos = (updated) => {
     saveToStorage("videos", updated);
     setVideos(updated);
@@ -37,26 +35,25 @@ export default function VideoManagement() {
   };
 
   const handleDelete = (id) => {
-    if (!confirm("Are you sure you want to delete this video?")) return;
+    if (!confirm("Delete this video?")) return;
     const updated = videos.filter((v) => v.id !== id);
     persistVideos(updated);
   };
 
   const handleSaveFromModal = ({ video, categories: updatedCategories }) => {
-    // update categories if provided
+    // update categories
     if (updatedCategories) {
       const uniq = Array.from(new Set(updatedCategories));
       saveToStorage("categories", uniq);
       setCategories(uniq);
     }
 
+    // update or add
     if (video.id) {
-      // edit existing video
       const updated = videos.map((v) => (v.id === video.id ? video : v));
       persistVideos(updated);
     } else {
-      // new video
-      const newVideo = { ...video, id: Date.now() };
+      const newVideo = { ...video, id: crypto.randomUUID() }; // unique id
       const updated = [...videos, newVideo];
       persistVideos(updated);
     }
@@ -70,7 +67,6 @@ export default function VideoManagement() {
 
   return (
     <div className="p-6">
-      {/* Top bar */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Video Management</h1>
         <button
@@ -81,14 +77,12 @@ export default function VideoManagement() {
         </button>
       </div>
 
-      {/* Category filter */}
       <CategoryFilter
         categories={["all", ...categories]}
         active={filter}
         onSelect={setFilter}
       />
 
-      {/* Video grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
         {filteredVideos.length === 0 ? (
           <div className="col-span-full text-center text-gray-500 p-10 border rounded">

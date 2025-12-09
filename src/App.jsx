@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import Sidebar from "./components/sidebar/Sidebar";
+
+import SectionsPage from "./components/gallery/SectionsPage";
+import AlbumPage from "./components/gallery/AlbumPage";
+
 import VideoManagement from "./components/video/VideoManagement";
 import Main from "./components/main/Main";
-import GalleryPage from "./components/gallery/GalleryPage";
 
 export default function App() {
   const [page, setPage] = useState("dashboard");
@@ -13,7 +16,8 @@ export default function App() {
 
       <main className="flex-1 p-6">
         {page === "dashboard" && <Main />}
-        {page === "gallery" && <GalleryPage />}
+        {page === "sections" && <SectionsPage />}
+        {page === "albums" && <AlbumPage />}
         {page === "video" && <VideoManagement />}
       </main>
     </div>
