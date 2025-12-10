@@ -32,7 +32,6 @@ export const saveAlbumsToStorage = (albums) => saveToStorage(ALBUMS_KEY, albums)
 
 /**
  * Sections helpers
- * Sections structure: [{ id, title, images: [{id, src}, ...] }, ...]
  */
 export const loadSectionsFromStorage = () => getFromStorage(SECTIONS_KEY, []);
 export const saveSectionsToStorage = (sections) => saveToStorage(SECTIONS_KEY, sections);

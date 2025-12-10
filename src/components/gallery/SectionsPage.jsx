@@ -5,26 +5,31 @@ import {
   generateId,
   fileToDataUrl,
 } from "../../utils/storage";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import ImageViewer from "./ImageViewer";
 
 export default function SectionsPage() {
-  // Load / init sections
+  const defaultSections = [
+    { id: "hero", title: "Hero Section", images: [] },
+    { id: "experience", title: "Experience Section", images: [] },
+    { id: "creativity", title: "Creativity Section", images: [] },
+    { id: "vision", title: "Vision Section", images: [] },
+    { id: "gallery", title: "Gallery Section", images: [] },
+  ];
+
   const [sections, setSections] = useState(() => {
-    const existing = loadSectionsFromStorage();
-    if (existing && existing.length) return existing;
-    return [
-      { id: "header", title: "Header", images: [] },
-      { id: "experience", title: "Experience", images: [] },
-      { id: "creativity", title: "Creativity", images: [] },
-      { id: "expertise", title: "Expertise", images: [] },
-      { id: "gallery", title: "Gallery", images: [] },
-      { id: "vision", title: "Vision", images: [] },
-    ];
+    const stored = loadSectionsFromStorage();
+    if (stored && stored.length) {
+      return defaultSections.map((def) => {
+        const found = stored.find((s) => s.id === def.id);
+        return found ? found : def;
+      });
+    }
+    return defaultSections;
   });
 
-  const [activeSectionId, setActiveSectionId] = useState(sections[0]?.id);
+  const [activeSectionId, setActiveSectionId] = useState(defaultSections[0].id);
   const [viewer, setViewer] = useState({ open: false, index: 0, images: [] });
-  const [newSectionTitle, setNewSectionTitle] = useState("");
 
   useEffect(() => {
     saveSectionsToStorage(sections);
@@ -32,43 +37,11 @@ export default function SectionsPage() {
 
   const activeSection = sections.find((s) => s.id === activeSectionId);
 
-  /* -------------------- SECTION ACTIONS -------------------- */
-
-  const addSection = () => {
-    if (!newSectionTitle.trim()) return alert("Section title required");
-
-    const newSection = {
-      id: generateId("section"),
-      title: newSectionTitle.trim(),
-      images: [],
-    };
-
-    setSections((prev) => [...prev, newSection]);
-    setActiveSectionId(newSection.id);
-    setNewSectionTitle("");
-  };
-
-  const editSectionTitle = (sectionId, title) => {
-    setSections((prev) =>
-      prev.map((s) => (s.id === sectionId ? { ...s, title } : s))
-    );
-  };
-
-  const deleteSection = (sectionId) => {
-    if (!confirm("Delete this section and all images?")) return;
-
-    setSections((prev) => {
-      const updated = prev.filter((s) => s.id !== sectionId);
-      if (updated.length) setActiveSectionId(updated[0].id);
-      return updated;
-    });
-  };
-
-  /* -------------------- IMAGE ACTIONS -------------------- */
+  /* ------------ IMAGE ACTIONS ------------ */
 
   const handleAddFiles = async (e) => {
     const files = Array.from(e.target.files || []);
-    if (!files.length || !activeSection) return;
+    if (!files.length) return;
 
     const buffers = await Promise.all(files.map(fileToDataUrl));
     const imagesToAdd = buffers.map((src) => ({
@@ -89,7 +62,6 @@ export default function SectionsPage() {
 
   const deleteImage = (imageId) => {
     if (!confirm("Delete this image?")) return;
-
     setSections((prev) =>
       prev.map((s) =>
         s.id === activeSectionId
@@ -99,121 +71,109 @@ export default function SectionsPage() {
     );
   };
 
-  /* -------------------- IMAGE VIEWER -------------------- */
+  const editImage = (imageId) => {
+    alert("Edit feature coming soon for image ID: " + imageId);
+  };
+
+  /* ------------ VIEWER ------------ */
 
   const openViewer = (index = 0) =>
     setViewer({ open: true, index, images: activeSection.images });
 
-  const closeViewer = () =>
-    setViewer({ open: false, index: 0, images: [] });
+  const closeViewer = () => setViewer({ open: false, index: 0, images: [] });
 
   const viewerIndexChange = (fn) =>
-    setViewer((v) => ({
-      ...v,
-      index: typeof fn === "function" ? fn(v.index) : fn,
+    setViewer((prev) => ({
+      ...prev,
+      index: typeof fn === "function" ? fn(prev.index) : fn,
     }));
 
-  /* -------------------- UI -------------------- */
-
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Image Sections</h1>
+    <div className="space-y-6 pb-10">
 
-      <div className="flex gap-4">
-        {/* LEFT – SECTIONS LIST */}
-        <div className="w-72 bg-white border rounded p-3">
-          <div className="font-semibold mb-2">Sections</div>
+      {/* HEADING + DROPDOWN LEFT */}
+      <div className="flex items-center gap-6 px-6">
+        <h1 className="text-2xl font-bold">Image Sections</h1>
 
-          <div className="flex gap-2 mb-3">
-            <input
-              value={newSectionTitle}
-              onChange={(e) => setNewSectionTitle(e.target.value)}
-              placeholder="New section name"
-              className="border px-2 py-1 text-sm rounded flex-1"
-            />
-            <button
-              onClick={addSection}
-              className="px-3 py-1 bg-orange-500 text-white rounded text-sm"
-            >
-              Add
-            </button>
-          </div>
+        <select
+          className="border px-3 py-2 rounded w-72"
+          value={activeSectionId}
+          onChange={(e) => setActiveSectionId(e.target.value)}
+        >
+          {sections.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.title}
+            </option>
+          ))}
+        </select>
+      </div>
 
-          <div className="space-y-2">
-            {sections.map((s) => (
-              <div key={s.id} className="flex items-center gap-2">
-                <button
-                  onClick={() => setActiveSectionId(s.id)}
-                  className={`flex-1 text-left px-2 py-1 rounded ${
-                    s.id === activeSectionId
-                      ? "bg-orange-500 text-white"
-                      : "hover:bg-gray-100"
-                  }`}
+      {/* HORIZONTAL LINE */}
+      <hr className="border-t border-gray-300" />
+
+      {/* SECTION TITLE + ADD IMAGES BUTTON */}
+      <div className="flex justify-between items-center px-6">
+        <div className="text-xl font-semibold">{activeSection.title}</div>
+
+        <label className="cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            hidden
+            onChange={handleAddFiles}
+          />
+          <span className="px-3 py-2 bg-orange-500 text-white rounded text-sm h-10 flex items-center">
+            Add Images
+          </span>
+        </label>
+      </div>
+
+      {/* IMAGES GRID */}
+      <div className="flex justify-center">
+        <div className="grid grid-cols-3 gap-4 mt-6 w-full max-w-[1200px]">
+          {activeSection.images.length > 0
+            ? activeSection.images.map((img) => (
+                <div
+                  key={img.id}
+                  className="relative group w-full aspect-square overflow-hidden rounded border cursor-pointer"
                 >
-                  {s.title}
-                </button>
+                  <img
+                    src={img.src}
+                    className="w-full h-full object-cover"
+                    onClick={() => openViewer(activeSection.images.indexOf(img))}
+                  />
 
-                <input
-                  value={s.title}
-                  onChange={(e) => editSectionTitle(s.id, e.target.value)}
-                  className="border px-1 text-xs rounded w-28"
-                />
-
-                <button
-                  onClick={() => deleteSection(s.id)}
-                  className="text-xs text-red-600"
+                  {/* EDIT + DELETE ICONS - BLACK/WHITE */}
+                  <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                    <button
+                      onClick={() => editImage(img.id)}
+                      className="bg-white p-1 rounded shadow hover:bg-gray-200"
+                    >
+                      <FiEdit2 size={16} />
+                    </button>
+                    <button
+                      onClick={() => deleteImage(img.id)}
+                      className="bg-white p-1 rounded shadow hover:bg-red-200"
+                    >
+                      <FiTrash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            : // Placeholder squares if no images
+              Array.from({ length: 6 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="w-full aspect-square border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 text-sm"
                 >
-                  delete
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* RIGHT – IMAGES */}
-        <div className="flex-1 bg-white border rounded p-4">
-          <div className="flex justify-between mb-3">
-            <div>
-              <div className="text-sm text-gray-500">Active Section</div>
-              <div className="font-semibold">{activeSection?.title}</div>
-            </div>
-
-            <div className="flex gap-2">
-              <label className="cursor-pointer">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  hidden
-                  onChange={handleAddFiles}
-                />
-                <span className="px-3 py-1 bg-orange-500 text-white rounded text-sm">
-                  Add images
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-4 gap-3">
-            {activeSection?.images.map((img, i) => (
-              <div key={img.id} className="relative">
-                <img
-                  src={img.src}
-                  className="h-36 w-full object-cover rounded cursor-pointer"
-                  onClick={() => openViewer(i)}
-                />
-                <button
-                  onClick={() => deleteImage(img.id)}
-                  className="absolute top-2 right-2 text-xs bg-red-500 text-white px-2 py-1 rounded"
-                >
-                  delete
-                </button>
-              </div>
-            ))}
-          </div>
+                  Image
+                </div>
+              ))}
         </div>
       </div>
 
+      {/* FULL VIEWER */}
       {viewer.open && (
         <ImageViewer
           images={viewer.images}

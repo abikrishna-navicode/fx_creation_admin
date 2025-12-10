@@ -34,7 +34,7 @@ const Sidebar = ({ onNavigate }) => {
       <nav className="flex flex-col gap-3 text-sm">
         {menuItem("dashboard", MdSpaceDashboard, "Dashboard")}
         {menuItem("sections", FaPhotoVideo, "Image Sections")}
-        {menuItem("albums", FaBookOpen, "Gallery Albums")}
+        {menuItem("albums", FaBookOpen, "Album Section")}
         {menuItem("video", MdVideoLibrary, "Video Management")}
         {menuItem("booking", FaBookOpen, "Booking Management")}
         {menuItem("contact", MdMessage, "Contact Messages")}
