@@ -5,22 +5,26 @@ const Login = ({ onSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
-    const success = login(email, password);
+    const result = await login(email, password);
 
-    if (success) {
+    setLoading(false);
+
+    if (result.success) {
       setSnackbar(true);
       setTimeout(() => {
         setSnackbar(false);
         onSuccess();
-      }, 1500);
+      }, 1200);
     } else {
-      setError("Wrong email or password");
+      setError(result.message);
     }
   };
 
@@ -40,6 +44,7 @@ const Login = ({ onSuccess }) => {
           className="w-full border px-3 py-2 rounded mb-3"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -48,6 +53,7 @@ const Login = ({ onSuccess }) => {
           className="w-full border px-3 py-2 rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         {error && (
@@ -56,9 +62,10 @@ const Login = ({ onSuccess }) => {
 
         <button
           type="submit"
-          className="w-full mt-5 bg-orange-500 text-white py-2 rounded hover:bg-orange-600"
+          disabled={loading}
+          className="w-full mt-5 bg-orange-500 text-white py-2 rounded hover:bg-orange-600 disabled:opacity-60"
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         {/* Snackbar */}

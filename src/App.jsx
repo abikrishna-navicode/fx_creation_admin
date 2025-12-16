@@ -11,22 +11,28 @@ export default function App() {
   const [page, setPage] = useState("dashboard");
   const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
+  /* NOT LOGGED IN → LOGIN PAGE */
   if (!loggedIn) {
     return <Login onSuccess={() => setLoggedIn(true)} />;
   }
 
+  /* ADMIN PANEL */
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-gray-50">
       <Sidebar
         onNavigate={setPage}
-        onLogout={() => setLoggedIn(false)}
+        onLogout={() => {
+          setLoggedIn(false);
+          setPage("dashboard");
+        }}
       />
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-y-auto">
         {page === "dashboard" && <Main />}
         {page === "sections" && <SectionsPage />}
         {page === "albums" && <AlbumPage />}
         {page === "video" && <VideoManagement />}
+        {page === "contact" && <h1>Contact Messages</h1>}
       </main>
     </div>
   );
