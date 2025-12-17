@@ -1,52 +1,50 @@
+import api from "./api";
+
 const AUTH_KEY = "fx_admin_auth";
 const TOKEN_KEY = "fx_admin_token";
 const USER_KEY = "fx_admin_user";
 
-const API_URL = "https://dev.backend.fxcreationstudio.com/api/login";
-
 /**
- * LOGIN (API)
+ * LOGIN
  */
 export const login = async (email, password) => {
   try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+    const res = await api.post("/login", { email, password });
 
-    const data = await res.json();
+    const { token, user } = res.data;
 
-    if (!res.ok) {
-      throw new Error(data.message || "Login failed");
+    if (!token) {
+      throw new Error("Login failed");
     }
 
-    // ✅ Store auth state
     localStorage.setItem(AUTH_KEY, "true");
-    localStorage.setItem(TOKEN_KEY, data.token || "");
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user || {}));
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user || {}));
 
     return { success: true };
   } catch (err) {
     return {
       success: false,
-      message: err.message || "Invalid credentials",
+      message:
+        err.response?.data?.message || "Invalid email or password",
     };
   }
 };
 
 /**
- * LOGOUT
+ * LOGOUT (API + LOCAL CLEANUP)
  */
-export const logout = () => {
-  localStorage.removeItem(AUTH_KEY);
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+export const logout = async () => {
+  try {
+    await api.post("/logout"); // 🔥 API call
+  } catch (err) {
+    console.warn("Logout API failed, clearing session anyway");
+  } finally {
+    // ✅ Always clear local session
+    localStorage.removeItem(AUTH_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+  }
 };
 
 /**
@@ -57,7 +55,7 @@ export const isLoggedIn = () => {
 };
 
 /**
- * GET TOKEN (for future APIs)
+ * GET TOKEN
  */
 export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY);
