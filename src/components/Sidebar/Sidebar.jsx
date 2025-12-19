@@ -13,12 +13,12 @@ const Sidebar = ({ onNavigate, onLogout }) => {
   const [active, setActive] = useState("dashboard");
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false); // Mobile/Tablet sidebar toggle
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleClick = (page) => {
     setActive(page);
     onNavigate(page);
-    setMobileOpen(false); // Close sidebar on small screens after click
+    setMobileOpen(false);
   };
 
   const confirmLogout = async () => {
@@ -50,7 +50,7 @@ const Sidebar = ({ onNavigate, onLogout }) => {
 
   return (
     <>
-      {/* Hamburger Button for Mobile & Tablets (sm to md) */}
+      {/* Hamburger Button */}
       <button
         onClick={() => setMobileOpen(true)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-orange-500 text-white rounded shadow"
@@ -61,11 +61,11 @@ const Sidebar = ({ onNavigate, onLogout }) => {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-screen w-[250px] p-6 flex flex-col border-r bg-white
-          transform transition-transform duration-300 shadow-lg z-50
-          ${mobileOpen ? "translate-x-0" : "-translate-x-full"} 
-          lg:translate-x-0 lg:static lg:flex`}
+        transform transition-transform duration-300 shadow-lg z-50
+        ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0 lg:static lg:flex`}
       >
-        {/* Close Button for Mobile & Tablets */}
+        {/* Close Button (Mobile) */}
         <div className="flex justify-end lg:hidden mb-4">
           <button onClick={() => setMobileOpen(false)}>
             <MdClose size={24} />
@@ -81,7 +81,7 @@ const Sidebar = ({ onNavigate, onLogout }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex flex-col gap-2 flex-1 z-50">
+        <nav className="flex flex-col gap-2 flex-1">
           {menuItem("dashboard", MdSpaceDashboard, "Dashboard")}
           {menuItem("sections", FaPhotoVideo, "Image Sections")}
           {menuItem("albums", FaBookOpen, "Album Section")}
@@ -98,29 +98,34 @@ const Sidebar = ({ onNavigate, onLogout }) => {
         </button>
       </aside>
 
-      {/* Blurred Overlay for Mobile & Tablets */}
+      {/* Mobile Overlay */}
       {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 backdrop-blur-sm bg-black/20 z-40 lg:hidden transition-opacity"
+          className="fixed inset-0 backdrop-blur-sm bg-black/20 z-40 lg:hidden"
         />
       )}
 
       {/* Logout Confirmation Modal */}
       {showConfirm && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded w-[320px]">
-            <h3 className="text-lg font-semibold mb-3">Confirm Logout</h3>
+          <div className="bg-white p-6 rounded w-[320px] text-center shadow-lg">
+            <h3 className="text-lg font-semibold mb-3">
+              Confirm Logout
+            </h3>
+
             <p className="text-sm text-gray-600 mb-5">
               Are you sure you want to logout?
             </p>
-            <div className="flex justify-end gap-3">
+
+            <div className="flex justify-center gap-3">
               <button
                 onClick={() => setShowConfirm(false)}
                 className="px-4 py-2 border rounded"
               >
                 Cancel
               </button>
+
               <button
                 onClick={confirmLogout}
                 disabled={loading}

@@ -95,7 +95,7 @@ const Login = ({ onSuccess }) => {
         </div>
 
         <h2 className="text-2xl font-semibold text-center mb-6">
-          Admin Login
+          Admin Panel
         </h2>
 
         {/* Email */}
